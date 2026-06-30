@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Room Occupancy — Amity Analytics</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="app">
+  <div class="report">
+
+    <header class="report-header">
+      <div class="brand-badge"><img src="https://upload.wikimedia.org/wikipedia/en/f/ff/Amity_University_logo.png" alt="Amity University"></div>
+      <div>
+        <h1>Live Room Occupancy</h1>
+        <div class="sub">Amity University · Analytics</div>
+      </div>
+      <nav class="page-tabs">
+        <a href="index.html">Admissions</a>
+        <a href="occupancy.html" class="active">Room Occupancy</a>
+        <a href="rooms.html">Available Rooms</a>
+      </nav>
+      <div class="header-nav">
+        <a class="nav-btn" href="rooms.html" title="Next page">→</a>
+      </div>
+    </header>
+
+    <div class="report-body no-side">
+      <main class="content">
+
+        <!-- Horizontal slicer strip -->
+        <section class="slicer-strip">
+          <div class="field"><span class="slicer-title">Day · Date</span>
+            <select class="select"><option>Thursday, June 18, 2026</option></select></div>
+          <div class="field"><span class="slicer-title">Sessions</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Academic Year</span>
+            <select class="select"><option>2025-2026</option></select></div>
+          <div class="field"><span class="slicer-title">Sem</span>
+            <select class="select"><option>2</option></select></div>
+          <div class="field"><span class="slicer-title">Block</span>
+            <select class="select"><option>Block</option></select></div>
+          <div class="field"><span class="slicer-title">Floor Name</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Room Type</span>
+            <select class="select"><option>All</option></select></div>
+          <button class="clear-btn">Clear all slicers</button>
+        </section>
+
+        <!-- KPI cards (7) -->
+        <section class="kpi-row kpi-7">
+          <div class="kpi feature"><div class="k-label">Total Rooms</div><div class="k-value">74</div></div>
+          <div class="kpi" style="--accent:var(--c-coral)"><div class="k-label">Occupied Rooms</div><div class="k-value">14</div></div>
+          <div class="kpi" style="--accent:var(--c-emerald)"><div class="k-label">Available Rooms</div><div class="k-value">60</div></div>
+          <div class="kpi" style="--accent:var(--c-indigo)"><div class="k-label">Room Utilization</div><div class="k-value">18.9<span style="font-size:16px">%</span></div></div>
+          <div class="kpi" style="--accent:var(--c-sky)"><div class="k-label">Time Utilization</div><div class="k-value">7.6<span style="font-size:16px">%</span></div></div>
+          <div class="kpi" style="--accent:var(--c-violet)"><div class="k-label">Seat Utilization</div><div class="k-value">18.5<span style="font-size:16px">%</span></div></div>
+          <div class="kpi" style="--accent:var(--c-amber)"><div class="k-label">Overall Utilization</div><div class="k-value">1.40</div></div>
+        </section>
+
+        <!-- Donuts + stat tiles -->
+        <section class="grid" style="grid-template-columns: repeat(4, minmax(0,1fr));">
+          <div class="panel">
+            <div class="panel-head"><h3>Rooms by Floor</h3></div>
+            <div class="legend">
+              <span><i style="background:var(--c-indigo)"></i>Third</span>
+              <span><i style="background:var(--c-sky)"></i>Second</span>
+              <span><i style="background:var(--c-teal)"></i>First</span>
+              <span><i style="background:var(--c-emerald)"></i>Ground</span>
+            </div>
+            <div class="chart-wrap"><canvas id="floorChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Rooms by Type</h3></div>
+            <div class="legend">
+              <span><i style="background:var(--c-indigo)"></i>Class</span>
+              <span><i style="background:var(--c-sky)"></i>Seminar</span>
+              <span><i style="background:var(--c-violet)"></i>Lab</span>
+              <span><i style="background:var(--c-teal)"></i>Studio</span>
+            </div>
+            <div class="chart-wrap"><canvas id="typeChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Active Classes</h3><span class="big-stat teal">62</span></div>
+            <div class="hint" style="margin-bottom:8px">Classes planned today, by batch</div>
+            <div class="chart-wrap"><canvas id="batchChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Total Capacity</h3><span class="big-stat indigo">3K</span></div>
+            <div class="legend">
+              <span><i style="background:var(--c-indigo)"></i>Third</span>
+              <span><i style="background:var(--c-sky)"></i>Second</span>
+              <span><i style="background:var(--c-teal)"></i>First</span>
+              <span><i style="background:var(--c-emerald)"></i>Ground</span>
+            </div>
+            <div class="chart-wrap"><canvas id="capacityChart"></canvas></div>
+          </div>
+        </section>
+
+        <!-- Availability grid -->
+        <section class="table-panel">
+          <div class="table-scroll" id="gridScroll">
+            <table class="data grid-table" id="availTable">
+              <thead><tr id="gridHead"></tr></thead>
+              <tbody id="gridBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+const donutOpts = { cutout: '62%', plugins: { tooltip: { callbacks: { label: (i)=>` ${i.label}: ${i.parsed}` } } } };
+
+new Chart(document.getElementById('floorChart'), {
+  type: 'doughnut',
+  data: { labels: ['Third Floor','Second Floor','First Floor','Ground Floor'],
+    datasets: [{ data: [31, 27, 9, 7], backgroundColor: [PAL.indigo, PAL.sky, PAL.teal, PAL.emerald], borderWidth: 3, borderColor: '#fff' }] },
+  options: donutOpts
+});
+
+new Chart(document.getElementById('typeChart'), {
+  type: 'doughnut',
+  data: { labels: ['Class Room','Seminar Room','Laboratory','Studio'],
+    datasets: [{ data: [26, 18, 15, 8], backgroundColor: [PAL.indigo, PAL.sky, PAL.violet, PAL.teal], borderWidth: 3, borderColor: '#fff' }] },
+  options: donutOpts
+});
+
+// Active Classes — by batch (62 total)
+new Chart(document.getElementById('batchChart'), {
+  type: 'bar',
+  data: {
+    labels: ['BBA 25', 'MBA 24', 'MBA 25', 'CSCI 25', 'PSYC 24'],
+    datasets: [{ data: [16, 14, 12, 11, 9], backgroundColor: PAL.indigo, borderRadius: 6, borderSkipped: false, maxBarThickness: 34 }]
+  },
+  options: {
+    plugins: { tooltip: { callbacks: { label: (i)=>` ${i.parsed.y} classes` } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: PAL.ink3 }, border: { display: false } },
+      y: { ...gridCfg, beginAtZero: true, ticks: { ...gridCfg.ticks, precision: 0, stepSize: 4 } }
+    }
+  }
+});
+
+// Total Capacity — available capacity by floor (3,000 seats)
+new Chart(document.getElementById('capacityChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Third Floor', 'Second Floor', 'First Floor', 'Ground Floor'],
+    datasets: [{ data: [1040, 980, 560, 420], backgroundColor: [PAL.indigo, PAL.sky, PAL.teal, PAL.emerald], borderWidth: 3, borderColor: '#fff' }]
+  },
+  options: { cutout: '64%', plugins: { tooltip: { callbacks: { label: (i)=>` ${i.label}: ${i.parsed.toLocaleString()} seats` } } } }
+});
+
+// Build availability grid
+const slots = ['8-9','9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22'];
+const rooms = ['GF02','GF03','GF04','GF05','GF06','GF07','LR103','LR104','SR201','SR202','ST301','ST302'];
+const head = document.getElementById('gridHead');
+head.innerHTML = '<th>Room No</th>' + slots.map(s=>`<th style="text-align:center">${s}</th>`).join('');
+const body = document.getElementById('gridBody');
+let html = '';
+rooms.forEach((r, ri) => {
+  html += `<tr><td class="room">${r}</td>`;
+  slots.forEach((s, si) => {
+    const busy = (ri + si) % 9 === 0 && si > 2;   // sprinkle a few occupied
+    html += `<td class="av ${busy?'busy':'ok'}" title="${s}: ${busy?'Occupied':'Available'}">${busy?'Occupied':'Available'}</td>`;
+  });
+  html += '</tr>';
+});
+body.innerHTML = html;
+</script>
+</body>
+</html>

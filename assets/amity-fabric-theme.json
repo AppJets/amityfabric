@@ -1,0 +1,56 @@
+{
+  "name": "Amity Fabric Analytics",
+  "dataColors": [
+    "#117865",
+    "#118dff",
+    "#e66c37",
+    "#e044a7",
+    "#12239e",
+    "#744ec2",
+    "#0e8a00",
+    "#d64550",
+    "#5b9bff",
+    "#9ac4ff",
+    "#a4262c",
+    "#0e4f43"
+  ],
+  "good": "#0e8a00",
+  "neutral": "#e66c37",
+  "bad": "#d64550",
+  "maximum": "#12239e",
+  "center": "#e66c37",
+  "minimum": "#9ac4ff",
+  "null": "#a19f9d",
+  "foreground": "#201f1e",
+  "foregroundNeutralSecondary": "#605e5c",
+  "foregroundNeutralTertiary": "#a19f9d",
+  "background": "#ffffff",
+  "backgroundLight": "#faf9f8",
+  "backgroundNeutral": "#f3f2f1",
+  "tableAccent": "#1c478a",
+  "hyperlink": "#118dff",
+  "visitedHyperlink": "#744ec2",
+  "textClasses": {
+    "title":        { "fontFace": "Segoe UI Semibold", "fontSize": 14, "color": "#201f1e" },
+    "header":       { "fontFace": "Segoe UI Semibold", "fontSize": 12, "color": "#201f1e" },
+    "label":        { "fontFace": "Segoe UI", "fontSize": 10, "color": "#605e5c" },
+    "callout":      { "fontFace": "Segoe UI Semibold", "fontSize": 32, "color": "#201f1e" },
+    "largeTitle":   { "fontFace": "Segoe UI Semibold", "fontSize": 18, "color": "#201f1e" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#ffffff" } }, "transparency": 0 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#e1dfdd" } }, "radius": 8 }],
+        "dropShadow": [{ "show": true, "preset": "Soft", "color": { "solid": { "color": "#000000" } } }],
+        "title": [{ "fontColor": { "solid": { "color": "#201f1e" } }, "fontSize": 12, "fontFamily": "Segoe UI Semibold" }],
+        "labels": [{ "color": { "solid": { "color": "#605e5c" } }, "fontFamily": "Segoe UI", "fontSize": 10 }],
+        "categoryAxis": [{ "labelColor": { "solid": { "color": "#a19f9d" } }, "gridlineColor": { "solid": { "color": "#edebe9" } } }],
+        "valueAxis": [{ "labelColor": { "solid": { "color": "#a19f9d" } }, "gridlineColor": { "solid": { "color": "#edebe9" } } }]
+      }
+    },
+    "page": {
+      "*": { "background": [{ "color": { "solid": { "color": "#f3f2f1" } }, "transparency": 0 }] }
+    }
+  }
+}

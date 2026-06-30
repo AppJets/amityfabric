@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admissions Overview — Amity Analytics</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="app">
+  <div class="report">
+
+    <!-- Header -->
+    <header class="report-header">
+      <div class="brand-badge"><img src="https://upload.wikimedia.org/wikipedia/en/f/ff/Amity_University_logo.png" alt="Amity University"></div>
+      <div>
+        <h1>Admissions Overview</h1>
+        <div class="sub">Amity University · Analytics</div>
+      </div>
+      <nav class="page-tabs">
+        <a href="index.html" class="active">Admissions</a>
+        <a href="occupancy.html">Room Occupancy</a>
+        <a href="rooms.html">Available Rooms</a>
+      </nav>
+    </header>
+
+    <div class="report-body">
+      <!-- Sidebar slicers -->
+      <aside class="sidebar">
+        <div class="slicer">
+          <span class="slicer-title">Academic Year</span>
+          <div class="check-list">
+            <label class="check"><input type="checkbox"> Select all</label>
+            <label class="check"><input type="checkbox" checked> 2022-23</label>
+            <label class="check"><input type="checkbox" checked> 2023-24</label>
+            <label class="check"><input type="checkbox" checked> 2024-25</label>
+            <label class="check"><input type="checkbox" checked> 2025-26</label>
+          </div>
+        </div>
+        <div class="slicer">
+          <span class="slicer-title">Program</span>
+          <select class="select"><option>All</option><option>MBA</option><option>BBA</option><option>MS PSYC</option><option>BS CSCI</option></select>
+        </div>
+        <div class="slicer">
+          <span class="slicer-title">Semester</span>
+          <select class="select"><option>All</option><option>Fall</option><option>Spring</option></select>
+        </div>
+        <div class="slicer">
+          <span class="slicer-title">Gender</span>
+          <select class="select"><option>All</option><option>Female</option><option>Male</option></select>
+        </div>
+        <button class="clear-btn">Clear all slicers</button>
+      </aside>
+
+      <!-- Content -->
+      <main class="content">
+
+        <!-- KPI cards -->
+        <section class="kpi-row kpi-5">
+          <div class="kpi feature">
+            <div class="k-label">Total Admissions</div>
+            <div class="k-value">442</div>
+            <div class="k-sub">Current academic cycle</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-amber)">
+            <div class="k-chip">◐</div>
+            <div class="k-label">Fall Admission</div>
+            <div class="k-value">406</div>
+            <div class="k-sub">91.9% of intake</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-emerald)">
+            <div class="k-chip">◑</div>
+            <div class="k-label">Spring Admission</div>
+            <div class="k-value">36</div>
+            <div class="k-sub">8.1% of intake</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-coral)">
+            <div class="k-chip">♀</div>
+            <div class="k-label">Female Admission</div>
+            <div class="k-value">196</div>
+            <div class="k-sub">44.3% share</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-indigo)">
+            <div class="k-chip">♂</div>
+            <div class="k-label">Male Admission</div>
+            <div class="k-value">246</div>
+            <div class="k-sub">55.7% share</div>
+          </div>
+        </section>
+
+        <!-- Charts -->
+        <section class="grid cols-3">
+          <div class="panel">
+            <div class="panel-head"><h3>Semester Trends</h3><span class="hint">by year</span></div>
+            <div class="legend">
+              <span><i style="background:#9ac4ff"></i>2022-23</span>
+              <span><i style="background:#5b9bff"></i>2023-24</span>
+              <span><i style="background:#118dff"></i>2024-25</span>
+              <span><i style="background:#12239e"></i>2025-26</span>
+            </div>
+            <div class="chart-wrap"><canvas id="semesterChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Gender Distribution</h3><span class="hint">by year</span></div>
+            <div class="legend">
+              <span><i style="background:var(--c-coral)"></i>Female</span>
+              <span><i style="background:var(--c-indigo)"></i>Male</span>
+              <span><i style="background:var(--c-violet)"></i>Other</span>
+            </div>
+            <div class="chart-wrap"><canvas id="genderChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Academic Year Trend</h3><span class="hint">total intake</span></div>
+            <div class="legend">
+              <span><i style="background:var(--c-teal)"></i>Total</span>
+              <span><i style="background:var(--c-amber)"></i>Fall</span>
+              <span><i style="background:var(--c-emerald)"></i>Spring</span>
+            </div>
+            <div class="chart-wrap"><canvas id="yearChart"></canvas></div>
+          </div>
+        </section>
+
+        <!-- Table -->
+        <section class="table-panel">
+          <div class="table-scroll">
+            <table class="data">
+              <colgroup>
+                <col style="width:26%"><col style="width:9%"><col style="width:13%">
+                <col style="width:9%"><col style="width:9%"><col style="width:12%">
+                <col style="width:10%"><col style="width:12%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>Program</th><th>Code</th><th>Academic Year</th>
+                  <th class="num">Total</th><th class="num">Fall</th><th>Fall (M/F)</th>
+                  <th class="num">Spring</th><th>Spring (M/F)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Master of Business Administration</td><td>MBA</td><td>2025</td><td class="num">83</td><td class="num">62</td><td>38 / 24</td><td class="num">21</td><td>14 / 7</td></tr>
+                <tr><td>Bachelor of Business Administration</td><td>BBA</td><td>2025</td><td class="num">70</td><td class="num">57</td><td>38 / 19</td><td class="num">13</td><td>9 / 4</td></tr>
+                <tr><td>Master of Business Administration</td><td>MBA</td><td>2024</td><td class="num">44</td><td class="num">39</td><td>19 / 20</td><td class="num">5</td><td>2 / 3</td></tr>
+                <tr><td>Bachelor of Business Administration</td><td>BBA</td><td>2024</td><td class="num">36</td><td class="num">32</td><td>21 / 11</td><td class="num">4</td><td>3 / 1</td></tr>
+                <tr><td>Master of Science in Psychology</td><td>MS PSYC</td><td>2025</td><td class="num">26</td><td class="num">26</td><td>3 / 23</td><td class="num">0</td><td>—</td></tr>
+                <tr><td>Bachelor of Science in Computer Science</td><td>BS CSCI</td><td>2025</td><td class="num">25</td><td class="num">25</td><td>19 / 6</td><td class="num">0</td><td>—</td></tr>
+                <tr><td>Master of Science in Psychology</td><td>MS PSYC</td><td>2024</td><td class="num">38</td><td class="num">25</td><td>4 / 21</td><td class="num">13</td><td>1 / 13</td></tr>
+                <tr><td>Bachelor of Science in Forensic Science</td><td>BS FRSC</td><td>2024</td><td class="num">20</td><td class="num">14</td><td>6 / 8</td><td class="num">6</td><td>2 / 4</td></tr>
+              </tbody>
+              <tfoot>
+                <tr><td colspan="3">Total</td><td class="num">912</td><td class="num">724</td><td>367 / 357</td><td class="num">188</td><td>121 / 67</td></tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+const radius = { borderRadius: 6, borderSkipped: false };
+
+// Semester Trends — grouped bars (Spring / Fall) across years
+new Chart(document.getElementById('semesterChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Spring', 'Fall'],
+    datasets: [
+      { label: '2022-23', data: [12, 28], backgroundColor: '#9ac4ff', ...radius },
+      { label: '2023-24', data: [22, 70], backgroundColor: '#5b9bff', ...radius },
+      { label: '2024-25', data: [40, 250], backgroundColor: '#118dff', ...radius },
+      { label: '2025-26', data: [36, 406], backgroundColor: '#12239e', ...radius },
+    ]
+  },
+  options: { scales: { x: gridCfg, y: { ...gridCfg, beginAtZero: true, title: { display: true, text: 'Total Admissions', color: PAL.ink3 } } } }
+});
+
+// Gender Distribution — stacked-ish grouped bars by year
+new Chart(document.getElementById('genderChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2022-23', '2023-24', '2024-25', '2025-26'],
+    datasets: [
+      { label: 'Female', data: [8, 24, 205, 196], backgroundColor: PAL.coral, ...radius },
+      { label: 'Male', data: [10, 38, 188, 246], backgroundColor: PAL.indigo, ...radius },
+      { label: 'Other', data: [1, 3, 6, 4], backgroundColor: PAL.violet, ...radius },
+    ]
+  },
+  options: { scales: { x: gridCfg, y: { ...gridCfg, beginAtZero: true, title: { display: true, text: 'Total Admissions', color: PAL.ink3 } } } }
+});
+
+// Academic Year Trend — multi-line
+new Chart(document.getElementById('yearChart'), {
+  type: 'line',
+  data: {
+    labels: ['2022', '2023', '2024', '2025'],
+    datasets: [
+      { label: 'Total', data: [20, 120, 360, 442], borderColor: PAL.teal, backgroundColor: (c)=>areaFill(c, '#117865', .22, 0), fill: true, tension: .35, borderWidth: 2.5, pointRadius: 3, pointBackgroundColor: PAL.teal },
+      { label: 'Fall', data: [18, 95, 300, 406], borderColor: PAL.amber, tension: .35, borderWidth: 2.5, pointRadius: 3, pointBackgroundColor: PAL.amber },
+      { label: 'Spring', data: [2, 25, 60, 36], borderColor: PAL.emerald, tension: .35, borderWidth: 2.5, pointRadius: 3, pointBackgroundColor: PAL.emerald },
+    ]
+  },
+  options: { scales: { x: gridCfg, y: { ...gridCfg, beginAtZero: true, title: { display: true, text: 'Total Admissions', color: PAL.ink3 } } } }
+});
+</script>
+</body>
+</html>

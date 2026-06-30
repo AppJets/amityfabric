@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Available Rooms — Amity Analytics</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="app">
+  <div class="report">
+
+    <header class="report-header">
+      <div class="brand-badge"><img src="https://upload.wikimedia.org/wikipedia/en/f/ff/Amity_University_logo.png" alt="Amity University"></div>
+      <div>
+        <h1>Search Available Rooms</h1>
+        <div class="sub">Amity University · Analytics</div>
+      </div>
+      <nav class="page-tabs">
+        <a href="index.html">Admissions</a>
+        <a href="occupancy.html">Room Occupancy</a>
+        <a href="rooms.html" class="active">Available Rooms</a>
+      </nav>
+      <div class="header-nav">
+        <a class="nav-btn" href="occupancy.html" title="Back">←</a>
+      </div>
+    </header>
+
+    <div class="report-body">
+      <!-- Sidebar slicers -->
+      <aside class="sidebar">
+        <div class="slicer"><span class="slicer-title">Day · Date</span>
+          <select class="select"><option>Thursday, June 18, 2026</option></select></div>
+        <div class="slicer"><span class="slicer-title">Sessions</span>
+          <select class="select"><option>All</option></select></div>
+        <div class="grid cols-2" style="gap:12px">
+          <div class="slicer"><span class="slicer-title">Academic Year</span>
+            <select class="select"><option>2025-26</option></select></div>
+          <div class="slicer"><span class="slicer-title">Sem</span>
+            <select class="select"><option>2</option></select></div>
+        </div>
+        <div class="grid cols-2" style="gap:12px">
+          <div class="slicer"><span class="slicer-title">Block</span>
+            <select class="select"><option>Block</option></select></div>
+          <div class="slicer"><span class="slicer-title">Floor Name</span>
+            <select class="select"><option>All</option></select></div>
+        </div>
+        <div class="slicer"><span class="slicer-title">Room Type</span>
+          <select class="select"><option>All</option></select></div>
+        <div class="slicer">
+          <span class="slicer-title">Room Status</span>
+          <div class="check-list">
+            <label class="check"><input type="checkbox" checked> Available</label>
+            <label class="check"><input type="checkbox"> Occupied</label>
+          </div>
+        </div>
+        <button class="clear-btn">Clear all slicers</button>
+      </aside>
+
+      <!-- Content -->
+      <main class="content">
+
+        <section class="grid" style="grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);">
+          <!-- Peak hour area chart -->
+          <div class="panel">
+            <div class="panel-head"><h3>Peak Hour Analysis · Today</h3><span class="hint">Thu, Jun 18 2026</span></div>
+            <div class="chart-wrap tall"><canvas id="peakChart"></canvas></div>
+          </div>
+
+          <!-- Floor utilization table -->
+          <div class="table-panel">
+            <table class="data">
+              <colgroup>
+                <col style="width:26%"><col style="width:34%">
+                <col style="width:14%"><col style="width:13%"><col style="width:13%">
+              </colgroup>
+              <thead><tr>
+                <th>Floor Name</th><th>Utilization %</th>
+                <th class="num">Available</th><th class="num">Occupied</th><th class="num">Total</th>
+              </tr></thead>
+              <tbody>
+                <tr><td>Second Floor</td><td><span class="ubar"><span class="track"><span class="fill" style="width:26%"></span></span>26%</span></td><td class="num">20</td><td class="num">7</td><td class="num">27</td></tr>
+                <tr><td>Third Floor</td><td><span class="ubar"><span class="track"><span class="fill" style="width:23%"></span></span>23%</span></td><td class="num">24</td><td class="num">7</td><td class="num">31</td></tr>
+                <tr><td>First Floor</td><td><span class="ubar"><span class="track"><span class="fill" style="width:0%"></span></span>0%</span></td><td class="num">9</td><td class="num">0</td><td class="num">9</td></tr>
+                <tr><td>Ground Floor</td><td><span class="ubar"><span class="track"><span class="fill" style="width:0%"></span></span>0%</span></td><td class="num">7</td><td class="num">0</td><td class="num">7</td></tr>
+              </tbody>
+              <tfoot>
+                <tr><td>Total</td><td>19%</td><td class="num">60</td><td class="num">14</td><td class="num">74</td></tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+
+        <!-- Room schedule table -->
+        <section class="table-panel">
+          <div class="table-scroll">
+            <table class="data" id="schedule">
+              <colgroup>
+                <col style="width:9%"><col style="width:12%"><col style="width:12%">
+                <col style="width:9%"><col style="width:11%"><col style="width:8%">
+                <col style="width:11%"><col style="width:14%"><col style="width:14%">
+              </colgroup>
+              <thead><tr>
+                <th>Room No</th><th>Floor Name</th><th>Room Type</th>
+                <th class="num">Capacity</th><th>Session Time</th><th>Session</th>
+                <th style="text-align:center">Availability</th><th>Faculty</th><th>Course</th>
+              </tr></thead>
+              <tbody id="schedBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+// Peak hour area chart
+new Chart(document.getElementById('peakChart'), {
+  type: 'line',
+  data: {
+    labels: ['9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21'],
+    datasets: [{
+      label: 'Occupied Rooms',
+      data: [2, 5, 6, 4, 4, 6, 4, 6, 11, 6, 4, 4],
+      borderColor: PAL.indigo,
+      backgroundColor: (c)=>areaFill(c, '#118dff', .28, 0),
+      fill: true, tension: .4, borderWidth: 2.5,
+      pointRadius: 3, pointBackgroundColor: PAL.indigo, pointHoverRadius: 5
+    }]
+  },
+  options: {
+    plugins: { tooltip: { callbacks: { label: (i)=>` ${i.parsed.y} rooms occupied` } } },
+    scales: { x: gridCfg, y: { ...gridCfg, beginAtZero: true, title: { display: true, text: 'Occupied Rooms', color: PAL.ink3 } } }
+  }
+});
+
+// Room schedule rows
+const slots = ['8-9','9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21'];
+let html = '';
+slots.forEach((s, i) => {
+  const busy = i === 8 || i === 5;
+  html += `<tr>
+    <td style="font-weight:700;color:var(--ink)">GF02</td>
+    <td>Ground Floor</td><td>Laboratory</td><td class="num">15</td>
+    <td>${s}</td><td>${i+1}</td>
+    <td style="text-align:center">${busy ? '<span class="pill busy">Occupied</span>' : '<span class="tick">✓</span>'}</td>
+    <td>${busy ? 'Dr. R. Mehta' : ''}</td>
+    <td>${busy ? 'Forensic Lab' : ''}</td>
+  </tr>`;
+});
+document.getElementById('schedBody').innerHTML = html;
+</script>
+</body>
+</html>
