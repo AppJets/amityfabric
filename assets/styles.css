@@ -383,6 +383,20 @@ table.data tfoot td {
 .pill.busy { background: #fde7e9; color: #a4262c; }
 .tick { color: var(--good); font-weight: 800; }
 
+/* conditional progress bars inside tables (green / amber / red by value) */
+.pbar { display: inline-flex; align-items: center; gap: 8px; }
+.pbar .track {
+  display: block; width: 72px; height: 8px;
+  border-radius: 4px; background: var(--border);
+  overflow: hidden; flex: 0 0 auto;
+}
+.pbar .fill { display: block; height: 100%; border-radius: 4px; }
+.pbar .val {
+  font-weight: 700; font-size: 11.5px;
+  min-width: 46px; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 /* utilization mini-bar inside table */
 .ubar { display: inline-flex; align-items: center; gap: 8px; }
 .ubar .track { display: block; width: 96px; height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; flex: 0 0 auto; }

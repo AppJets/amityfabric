@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Overview — Amity Analytics</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="app">
+  <div class="report">
+
+    <header class="report-header">
+      <div class="brand-badge"><img src="https://upload.wikimedia.org/wikipedia/en/f/ff/Amity_University_logo.png" alt="Amity University"></div>
+      <div>
+        <h1>Attendance Overview</h1>
+        <div class="sub">Amity University · Analytics</div>
+      </div>
+      <nav class="page-tabs">
+        <a href="index.html">Admissions</a>
+        <a href="attendance.html" class="active">Attendance</a>
+        <a href="occupancy.html">Room Occupancy</a>
+        <a href="rooms.html">Available Rooms</a>
+      </nav>
+    </header>
+
+    <div class="report-body no-side">
+      <main class="content">
+
+        <!-- Horizontal slicer strip -->
+        <section class="slicer-strip">
+          <div class="field"><span class="slicer-title">Date</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Academic Year</span>
+            <select class="select"><option>2025-2026</option></select></div>
+          <div class="field"><span class="slicer-title">Semester</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Institute</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Program</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Course</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Faculty</span>
+            <select class="select"><option>All</option></select></div>
+          <div class="field"><span class="slicer-title">Group</span>
+            <select class="select"><option>All</option></select></div>
+          <button class="clear-btn">Clear all slicers</button>
+        </section>
+
+        <!-- KPI cards -->
+        <section class="kpi-row kpi-5">
+          <div class="kpi feature">
+            <div class="k-label">Total Students</div>
+            <div class="k-value">1,005</div>
+            <div class="k-sub">Enrolled · current semester</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-emerald)">
+            <div class="k-chip">%</div>
+            <div class="k-label">Attendance %</div>
+            <div class="k-value">96.37<span style="font-size:16px">%</span></div>
+            <div class="k-sub">Overall, all programs</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-indigo)">
+            <div class="k-chip">▦</div>
+            <div class="k-label">Total Classes</div>
+            <div class="k-value">21K</div>
+            <div class="k-sub">Scheduled this year</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-teal)">
+            <div class="k-chip">✓</div>
+            <div class="k-label">Attendance Taken</div>
+            <div class="k-value">9K</div>
+            <div class="k-sub">42.8% of classes</div>
+          </div>
+          <div class="kpi" style="--accent:var(--c-amber)">
+            <div class="k-chip">◔</div>
+            <div class="k-label">Attendance Pending</div>
+            <div class="k-value">13K</div>
+            <div class="k-sub">Awaiting faculty entry</div>
+          </div>
+        </section>
+
+        <!-- Charts + course table -->
+        <section class="grid" style="grid-template-columns: repeat(4, minmax(0,1fr));">
+          <div class="panel">
+            <div class="panel-head"><h3>Present vs Absent</h3></div>
+            <div class="legend">
+              <span><i style="background:var(--c-emerald)"></i>Present</span>
+              <span><i style="background:var(--c-rose)"></i>Absent</span>
+            </div>
+            <div class="chart-wrap"><canvas id="presentChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Attendance Distribution</h3></div>
+            <div class="legend">
+              <span><i style="background:var(--c-emerald)"></i>Above 95%</span>
+              <span><i style="background:var(--c-teal)"></i>85-95%</span>
+              <span><i style="background:var(--c-amber)"></i>75-85%</span>
+              <span><i style="background:var(--c-rose)"></i>Below 75%</span>
+              <span><i style="background:var(--ink-3)"></i>0% · Not taken</span>
+            </div>
+            <div class="chart-wrap"><canvas id="distChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Attendance % Trend</h3><span class="hint">by month</span></div>
+            <div class="legend">
+              <span><i style="background:var(--c-emerald)"></i>On / above 96% target</span>
+              <span><i style="background:var(--c-rose)"></i>Below target</span>
+            </div>
+            <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+          </div>
+          <div class="table-panel">
+            <div class="table-scroll" style="max-height:296px">
+              <table class="data">
+                <colgroup><col style="width:66%"><col style="width:34%"></colgroup>
+                <thead><tr><th>Attendance % by Course</th><th class="num">Attendance %</th></tr></thead>
+                <tbody id="courseBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Compliance / low attendance / programs -->
+        <!-- 1.5fr + 1.5fr + 1fr: the program panel matches the 1/4-width course column above -->
+        <section class="grid" style="grid-template-columns: minmax(0,1.5fr) minmax(0,1.5fr) minmax(0,1fr);">
+          <div class="table-panel">
+            <div class="table-scroll" style="max-height:296px">
+              <table class="data">
+                <colgroup>
+                  <col style="width:32%"><col style="width:19%"><col style="width:16%">
+                  <col style="width:15%"><col style="width:18%">
+                </colgroup>
+                <thead><tr>
+                  <th>Faculty Attendance Compliance</th><th class="num">Scheduled</th>
+                  <th class="num">Taken</th><th class="num">Missing</th><th class="num">Compliance %</th>
+                </tr></thead>
+                <tbody id="facultyBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="table-panel">
+            <div class="table-scroll" style="max-height:296px">
+              <table class="data">
+                <colgroup><col style="width:26%"><col style="width:48%"><col style="width:26%"></colgroup>
+                <thead><tr>
+                  <th>Low Attendance (&lt;75%)</th><th>Student Name</th><th class="num">Attendance %</th>
+                </tr></thead>
+                <tbody id="studentBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Attendance % by Program</h3><span class="hint">vs targets</span></div>
+            <div class="legend">
+              <span><i style="background:var(--c-emerald)"></i>≥ 95%</span>
+              <span><i style="background:var(--c-amber)"></i>85–95%</span>
+              <span><i style="background:var(--c-rose)"></i>&lt; 85%</span>
+            </div>
+            <div class="chart-wrap tall" style="height:240px"><canvas id="programChart"></canvas></div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+const donutOpts = { cutout: '62%', plugins: { tooltip: { callbacks: { label: (i)=>` ${i.label}: ${i.parsed.toLocaleString()}` } } } };
+
+// green / amber / red by value vs thresholds
+const GOOD = PAL.emerald, WARN = PAL.amber, BAD = PAL.rose;
+const rag = (v, good, warn) => v >= good ? GOOD : v >= warn ? WARN : BAD;
+
+// Present vs Absent
+new Chart(document.getElementById('presentChart'), {
+  type: 'doughnut',
+  data: { labels: ['Present', 'Absent'],
+    datasets: [{ data: [96.37, 3.63], backgroundColor: [GOOD, BAD], borderWidth: 3, borderColor: '#fff' }] },
+  options: { cutout: '62%', plugins: { tooltip: { callbacks: { label: (i)=>` ${i.label}: ${i.parsed}%` } } } }
+});
+
+// Attendance Distribution — students by attendance band (green → red)
+new Chart(document.getElementById('distChart'), {
+  type: 'doughnut',
+  data: { labels: ['Above 95%', '85-95%', '75-85%', 'Below 75%', '0% · Not taken'],
+    datasets: [{ data: [698, 234, 22, 38, 13], backgroundColor: [GOOD, PAL.teal, WARN, BAD, PAL.ink3], borderWidth: 3, borderColor: '#fff' }] },
+  options: donutOpts
+});
+
+// Attendance % Trend — monthly, green on/above the 96% target, red below
+const TREND = [96.2, 97.8, 96.9, 95.1, 95.4], TARGET = 96;
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels: ['February', 'March', 'April', 'May', 'June'],
+    datasets: [{
+      label: 'Attendance %', data: TREND,
+      borderColor: GOOD, backgroundColor: (c)=>areaFill(c, '#0e8a00', .16, 0),
+      segment: { borderColor: (c)=> (c.p0.parsed.y < TARGET || c.p1.parsed.y < TARGET) ? BAD : GOOD },
+      fill: true, tension: .35, borderWidth: 2.5, pointRadius: 4,
+      pointBackgroundColor: TREND.map(v => v >= TARGET ? GOOD : BAD),
+      pointBorderColor: '#fff', pointBorderWidth: 1.5
+    }]
+  },
+  options: {
+    plugins: { tooltip: { callbacks: { label: (i)=>` ${i.parsed.y}%` } } },
+    scales: {
+      x: gridCfg,
+      y: { ...gridCfg, min: 90, max: 100, ticks: { ...gridCfg.ticks, callback: v=>v+'%' },
+           title: { display: true, text: 'Attendance %', color: PAL.ink3 } }
+    }
+  }
+});
+
+// Attendance % by Program — horizontal bars, green/amber/red vs target
+new Chart(document.getElementById('programChart'), {
+  type: 'bar',
+  data: {
+    labels: ['BBALLB', 'EMBA', 'BS BIOT', 'MS FRSC', 'MS PSYC', 'BS CSCI', 'MBA', 'BBA'],
+    datasets: [{ data: [99.5, 99.4, 99.2, 98.9, 98.7, 92.1, 84.6, 71.3],
+      backgroundColor: (c)=> rag(c.parsed.x, 95, 85),
+      borderRadius: 4, borderSkipped: false, maxBarThickness: 10, categoryPercentage: .6 }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { tooltip: { callbacks: { label: (i)=>` ${i.parsed.x}%` } } },
+    scales: {
+      x: { ...gridCfg, min: 0, max: 100, ticks: { ...gridCfg.ticks, callback: v=>v+'%' },
+           title: { display: true, text: 'Attendance %', color: PAL.ink3 } },
+      y: { grid: { display: false }, ticks: { color: PAL.ink2 }, border: { display: false } }
+    }
+  }
+});
+
+/* ---- Conditional progress-bar tables ---- */
+function bar(v, good, warn) {
+  const c = rag(v, good, warn);
+  return `<span class="pbar">
+    <span class="track"><span class="fill" style="width:${Math.max(v, 2)}%;background:${c}"></span></span>
+    <span class="val" style="color:${c}">${v.toFixed(1)} %</span></span>`;
+}
+
+// Attendance % by Course — lowest first
+const courses = [
+  ['Strategic Management', 78.1], ['History of Interior Design', 80.6],
+  ['Advanced Financial Accounting', 80.6], ['Fashion Model Drawing-I', 83.2],
+  ['Procurement and Supply Management', 84.2], ['Architectural Design Studio III', 84.8],
+  ['Corporate Law', 85.7], ['Retail Management', 85.9],
+  ['Numerical Methods & Optimization', 86.3], ['Consumer Behaviour', 87.4],
+  ['Design Thinking', 88.9], ['Business Analytics', 90.2],
+];
+document.getElementById('courseBody').innerHTML = courses.map(([n, v]) =>
+  `<tr><td>${n}</td><td class="num">${bar(v, 90, 80)}</td></tr>`).join('');
+
+// Faculty Attendance Compliance — lowest first
+const faculty = [
+  ['Uzma Zaidi', 12, 0, 12, 0.0], ['Ahmed Jumah Al Haddad', 286, 25, 261, 8.7],
+  ['Poonam Bhatia', 102, 10, 92, 9.8], ['Samar Emara', 255, 28, 227, 11.0],
+  ['Lamiaa Fattouh', 383, 58, 325, 15.1], ['Ritu Sharma', 240, 62, 178, 25.8],
+  ['Vikram Menon', 198, 88, 110, 44.4], ['Neha Kapoor', 176, 121, 55, 68.8],
+  ['Arun Nair', 210, 183, 27, 87.1], ['Divya Pillai', 154, 149, 5, 96.8],
+];
+document.getElementById('facultyBody').innerHTML = faculty.map(([n, s, t, m, v]) =>
+  `<tr><td>${n}</td><td class="num">${s}</td><td class="num">${t}</td><td class="num">${m}</td>
+   <td class="num">${bar(v, 80, 50)}</td></tr>`).join('');
+
+// Low attendance students (<75%)
+const students = [
+  ['AUD30741', 'Sarthik Sharma', 33.3], ['AUD30994', 'Shehab Abdulla Salem Othman', 44.0],
+  ['AUD22974', 'Sri Tejas Melukote Kainkaryam', 50.0], ['AUD30769', 'Rohini Roy', 50.0],
+  ['AUD22883', 'Jay Mansukhpari Goswami', 53.8], ['AUD22543', 'Gagandeep Bhatia', 68.9],
+  ['AUD23108', 'Meera Krishnan', 71.2], ['AUD23342', 'Farhan Al Marzooqi', 73.6],
+];
+document.getElementById('studentBody').innerHTML = students.map(([id, n, v]) =>
+  `<tr><td class="cell-num">${id}</td><td>${n}</td><td class="num">${bar(v, 90, 75)}</td></tr>`).join('');
+</script>
+</body>
+</html>
